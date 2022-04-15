@@ -1,4 +1,4 @@
-class multiplayer extends Phaser.Scene {
+class Multiplayer extends Phaser.Scene {
     constructor() {
       super("2playScene");
     }
@@ -37,7 +37,7 @@ class multiplayer extends Phaser.Scene {
         keyD =  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         // add rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2-100, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
-        //this.p2Rocket = new Rocket2(this, game.config.width/2+100, game.config.height - borderUISize - borderPadding, 'rocket2').setOrigin(0.5, 0);
+        this.p2Rocket = new Rocket2(this, game.config.width/2+100, game.config.height - borderUISize - borderPadding, 'rocket2').setOrigin(0.5, 0);
         
         // add spaceships (x3)
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0);
@@ -53,7 +53,7 @@ class multiplayer extends Phaser.Scene {
         });
         // initialize score
         this.p1Score = 0;
-        //this.p2Score = 0;
+        this.p2Score = 0;
         this.p1Timer = game.settings.gameTimer/1000
         // display score
         let scoreConfig = {
@@ -69,7 +69,7 @@ class multiplayer extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, "P1:"+this.p1Score, scoreConfig);
-        //this.scoreLeft2 = this.add.text(borderUISize + borderPadding+200, borderUISize + borderPadding*2,"P2:"+ this.p2Score, scoreConfig);
+        this.scoreLeft2 = this.add.text(borderUISize + borderPadding+200, borderUISize + borderPadding*2,"P2:"+ this.p2Score, scoreConfig);
         // GAME OVER flag
         this.gameOver = false;
 
@@ -99,8 +99,8 @@ class multiplayer extends Phaser.Scene {
         if(!this.gameOver) {
             this.starfield.tilePositionX -= 4;
             this.p1Rocket.update();             // update p1
-            //this.p2Rocket.update();
-            this.ship01.update();               // update spaceship (x3)
+            this.p2Rocket.update();
+             this.ship01.update();               // update spaceship (x3)
             this.ship02.update();
             this.ship03.update();
             this.small01.update();
@@ -131,7 +131,27 @@ class multiplayer extends Phaser.Scene {
             this.shipExplode(this.ship01);
         }
 
-        
+        // check collisions player 2
+        if(this.checkCollision(this.p2Rocket, this.small01)) {
+            console.log('kaboom ship 03');
+            this.p2Rocket.reset()
+            this.shipExplode2(this.small01);   
+        }
+        if(this.checkCollision(this.p2Rocket, this.ship03)) {
+            console.log('kaboom ship 03');
+            this.p2Rocket.reset()
+            this.shipExplode2(this.ship03);   
+        }
+        if (this.checkCollision(this.p2Rocket, this.ship02)) {
+            console.log('kaboom ship 02');
+            this.p2Rocket.reset()
+            this.shipExplode2(this.ship02);
+        }
+        if (this.checkCollision(this.p2Rocket, this.ship01)) {
+            console.log('kaboom ship 01');
+            this.p2Rocket.reset()
+            this.shipExplode2(this.ship01);
+        }
     }
 
 
@@ -163,12 +183,27 @@ shipExplode(ship) {
     this.sound.play('sfx_explosion');    
   }
 
-  
+  shipExplode2(ship) {
+    // temporarily hide ship
+    ship.alpha = 0;
+    // create explosion sprite at ship's position
+    let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+    boom.anims.play('explode');             // play explode animation
+    boom.on('animationcomplete', () => {    // callback after anim completes
+      ship.reset();                         // reset ship position
+      ship.alpha = 1;                       // make ship visible again
+      boom.destroy();                       // remove explosion sprite
+    }); 
+    // score add and repaint
+    this.p2Score += ship.points;
+    this.scoreLeft2.text = "P2:"+this.p2Score;  
+    this.sound.play('sfx_explosion');    
+  }
   
 onEvent = function(){
     if(this.p1Timer!==0){
     this.p1Timer -= 1; // One second
     this.scoreRight.text = "TIME: "+this.p1Timer;
     }
-  }  
+  } 
 }

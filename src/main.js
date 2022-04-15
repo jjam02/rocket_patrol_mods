@@ -2,7 +2,7 @@ let config = {
     type: Phaser.AUTO,
     width: 880,
     height: 480,
-    scene: [ Menu, Play ]
+    scene: [ Menu, Play, Multiplayer ]
   }
 
 
