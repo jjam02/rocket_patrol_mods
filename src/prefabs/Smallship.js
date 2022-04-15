@@ -1,8 +1,9 @@
 class Smallship extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, texture, frame, pointValue) {
+    constructor(scene, x, y, texture, frame, pointValue, timeValue) {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);   // add to existing scene
         this.points = pointValue;   // store pointValue
+        this.time = timeValue; 
         this.moveSpeed = game.settings.smallshipSpeed;         // pixels per frame
     }
 
