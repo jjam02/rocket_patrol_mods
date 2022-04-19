@@ -203,7 +203,16 @@ shipExplode(ship) {
     // score add and repaint
     this.p1Score += ship.points;
     this.scoreLeft.text = "P1:"+this.p1Score;  
-    this.sound.play('sfx_explosion');    
+    let num  = Math.floor(Math.random()*4);
+    if(num==0){
+        this.sound.play('sfx_explosion');  
+    }else if(num==1){
+        this.sound.play('sfx_explosion2');  
+    }else if(num == 2){
+        this.sound.play('sfx_explosion3');  
+    }else if(num==3){
+        this.sound.play('sfx_explosion4');  
+    }  
   }
 
   shipExplode2(ship) {
@@ -220,7 +229,16 @@ shipExplode(ship) {
     // score add and repaint
     this.p2Score += ship.points;
     this.scoreLeft2.text = "P2:"+this.p2Score;  
-    this.sound.play('sfx_explosion');    
+    let num  = Math.floor(Math.random()*4);
+    if(num==0){
+        this.sound.play('sfx_explosion');  
+    }else if(num==1){
+        this.sound.play('sfx_explosion2');  
+    }else if(num == 2){
+        this.sound.play('sfx_explosion3');  
+    }else if(num==3){
+        this.sound.play('sfx_explosion4');  
+    }   
   }
   
 onEvent = function(){
