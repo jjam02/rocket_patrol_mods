@@ -171,7 +171,18 @@ shipExplode(ship) {
     this.p1Score += ship.points;
     this.p1Timer += ship.time;
     this.scoreLeft.text = "P1:"+this.p1Score;  
-    this.sound.play('sfx_explosion');    
+    let num  = Math.floor(Math.random()*4);
+    console.log(num);
+    if(num==0){
+        this.sound.play('sfx_explosion');  
+    }else if(num==1){
+        this.sound.play('sfx_explosion2');  
+    }else if(num == 2){
+        this.sound.play('sfx_explosion3');  
+    }else if(num==3){
+        this.sound.play('sfx_explosion4');  
+    }
+      
   }
 
   
