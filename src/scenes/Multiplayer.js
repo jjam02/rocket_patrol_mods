@@ -69,7 +69,7 @@ class Multiplayer extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, "P1:"+this.p1Score, scoreConfig);
-        this.scoreLeft2 = this.add.text(borderUISize + borderPadding+200, borderUISize + borderPadding*2,"P2:"+ this.p2Score, scoreConfig);
+        this.scoreLeft2 = this.add.text(game.config.width - 150, borderUISize + borderPadding*2,"P2:"+ this.p2Score, scoreConfig);
         // GAME OVER flag
         this.gameOver = false;
 
@@ -78,14 +78,37 @@ class Multiplayer extends Phaser.Scene {
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
         this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+        if(this.p1Score>this.p2Score){
+            this.add.text(game.config.width/2 , game.config.height/2 -50, 'P1 WINS', scoreConfig).setOrigin(0.5);
+
+        }else if(this.p1Score<this.p2Score){
+            this.add.text(game.config.width/2 , game.config.height/2 -50, 'P2 WINS', scoreConfig).setOrigin(0.5);
+        }else{
+            this.add.text(game.config.width/2 , game.config.height/2 -50, 'TIE', scoreConfig).setOrigin(0.5);
+        }
         this.gameOver = true;
         }, null, this);
-        this.scoreRight = this.add.text(borderUISize + borderPadding+500, borderUISize + borderPadding*2, "TIME: "+this.p1Timer, scoreConfig);
+        this.scoreRight = this.add.text(game.config.width/2, borderUISize + borderPadding*2 +18, "TIME: "+this.p1Timer, scoreConfig).setOrigin(0.5);
+        this.fireText = this.add.text(game.config.width/2-185, borderUISize + borderPadding*2, "", scoreConfig);
+        this.fireText2 = this.add.text(game.config.width/2+100, borderUISize + borderPadding*2, "", scoreConfig);
         this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
         
     }
 
     update() {
+        if(this.p1Rocket.isFiring == true){
+            this.fireText.text = "FIRE!";
+
+        }else if (this.p1Rocket.isFiring == false){
+            this.fireText.text = "";
+        }
+
+        if(this.p2Rocket.isFiring == true){
+            this.fireText2.text = "FIRE!";
+
+        }else if (this.p2Rocket.isFiring == false){
+            this.fireText2.text = "";
+        }
     
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();

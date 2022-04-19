@@ -32,4 +32,6 @@ let scoreConfig = {
 //Implement a simultaneous two-player mode (30)
 //Display the time remaining (in seconds) on the screen (10)
 //Implement a new timing/scoring mechanism that adds time to the clock for successful hits (20)
-// 20 + 30 + 10 +20 = 80
+//Implement the 'FIRE' UI text from the original game (5)
+//Allow the player to control the Rocket after it's fired (5)
+// 20 + 30 + 10 +20 + 5 + 5  = 90

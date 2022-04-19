@@ -15,6 +15,7 @@ class Play extends Phaser.Scene {
 
     create() {
         
+        
         // place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
         // green UI background 
@@ -77,13 +78,19 @@ class Play extends Phaser.Scene {
         scoreConfig.fixedWidth = 0;
         
         
-        this.scoreRight = this.add.text(borderUISize + borderPadding+500, borderUISize + borderPadding*2, "TIME: "+this.p1Timer, scoreConfig);
+        this.scoreRight = this.add.text(game.config.width/2, borderUISize + borderPadding*2 +18, "TIME: "+this.p1Timer, scoreConfig).setOrigin(0.5);
+        this.fireText = this.add.text(borderUISize + borderPadding+500, borderUISize + borderPadding*2, "", scoreConfig);
         this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
         
     }
 
     update() {
-        
+        if(this.p1Rocket.isFiring == true){
+            this.fireText.text = "FIRE!";
+
+        }else if (this.p1Rocket.isFiring == false){
+            this.fireText.text = "";
+        }
         if(this.p1Timer==0){
             //this.scoreRight.text = "TIME: 0";
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
